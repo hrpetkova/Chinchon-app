@@ -187,9 +187,12 @@
           <h3>🌞 ${player.name} - ${player.score} puntos (Vidas: ${player.livesUsed}/2)</h3>
           <input type="number" id="points-${index}" placeholder="Puntos esta ronda" />
           <div class="chinchon-check">
+            <label>
             <input type="checkbox" id="chinchon-${index}" />
-            <label for="chinchon-${index}">¿Chinchón?</label>
+            ¿Chinchón?
+             </label>
           </div>
+
         `;
         container.appendChild(card);
       });
