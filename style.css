@@ -26,10 +26,12 @@ input, button {
   padding: 0.7rem;
   margin: 0.3rem 0;
   width: 100%;
+  max-width: 100%;
   font-size: 1rem;
   border-radius: 6px;
   border: none;
 }
+
 
 button {
   background-color: #00c2cb;
