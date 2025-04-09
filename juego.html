@@ -127,11 +127,16 @@
       });
 
       // Filtrar eliminados
-      players = players.filter(p => !p.eliminated);
+players = players.filter(p => !p.eliminated);
 
-      // Guardar progreso
-      localStorage.setItem('chinchon_players', JSON.stringify(players));
-      renderPlayers();
+// Guardar progreso
+localStorage.setItem('chinchon_players', JSON.stringify(players));
+renderPlayers();
+
+// VERIFICAR SI HAY GANADOR
+if (players.length === 1) {
+  alert(`${players[0].name} ha ganado la partida. ¡Enhorabuena!`);
+}
     }
 
     renderPlayers();
