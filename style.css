@@ -3,12 +3,13 @@ body {
   margin: 0;
   padding: 1rem;
   background: url('fondo_piscina.png') no-repeat center center fixed;
+
   background-size: cover;
   color: #fff;
 }
 
 .container {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   padding: 1rem;
   border-radius: 10px;
 }
