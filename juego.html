@@ -27,11 +27,10 @@
           <input type="number" id="points-${index}" placeholder="Puntos esta ronda" />
           <div class="chinchon-check">
             <label for="chinchon-${index}">
-            <input type="checkbox" id="chinchon-${index}" />
-                  ¿Ha hecho chinchón?
-              </label>
+              <input type="checkbox" id="chinchon-${index}" />
+              ¿Ha hecho chinchón?
+            </label>
           </div>
-
         `;
         container.appendChild(card);
       });
@@ -55,8 +54,12 @@
 
         if (player.score > 100) {
           if (player.livesUsed < 2) {
-            const puntuacionesValidas = players.filter(p => p !== player && p.score <= 100).map(p => p.score);
-            const maxPuntos = puntuacionesValidas.length > 0 ? Math.max(...puntuacionesValidas) : 100;
+            const puntuacionesValidas = players
+              .filter(p => p !== player && p.score <= 100)
+              .map(p => p.score);
+            const maxPuntos = puntuacionesValidas.length > 0
+              ? Math.max(...puntuacionesValidas)
+              : 100;
             alert(`${player.name} ha superado los 100 puntos. Se reengancha con ${maxPuntos} puntos (vida ${player.livesUsed + 1}/2).`);
             player.score = maxPuntos;
             player.livesUsed += 1;
@@ -72,15 +75,12 @@
       renderPlayers();
 
       if (players.length === 1) {
-  alert(`${players[0].name} ha ganado la partida. ¡Enhorabuena!`);
-  localStorage.clear(); // limpia todo
-  setTimeout(() => {
-    location.replace('index.html'); // reinicia bien
-  }, 100);
-}
-
-}
-
+        alert(`${players[0].name} ha ganado la partida. ¡Enhorabuena!`);
+        localStorage.clear(); // limpia todo
+        setTimeout(() => {
+          location.replace('index.html'); // vuelve al inicio
+        }, 100);
+      }
     }
 
     renderPlayers();
