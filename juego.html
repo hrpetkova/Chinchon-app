@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Partida Chinchón</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0fdf4;
+      margin: 0;
+      padding: 1rem;
+    }
+
+    .player-card {
+      background: white;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .player-card h3 {
+      margin: 0 0 0.5rem 0;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .chinchon-check {
+      margin-top: 0.5rem;
+    }
+
+    #finalizarBtn {
+      padding: 1rem;
+      width: 100%;
+      background: #007bff;
+      color: white;
+      border: none;
+      font-size: 1.1rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+    }
+
+    .alerta {
+      font-weight: bold;
+      color: red;
+      font-size: 1.2rem;
+      text-align: center;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Ronda Actual</h2>
+  <div id="playersContainer"></div>
+  <button id="finalizarBtn" onclick="finalizarRonda()">Finalizar Ronda</button>
+
+  <div id="alertaChinchon" class="alerta"></div>
+
+  <script>
+    let players = JSON.parse(localStorage.getItem('chinchon_players')) || [];
+
+    function renderPlayers() {
+      const container = document.getElementById('playersContainer');
+      container.innerHTML = '';
+      players.forEach((player, index) => {
+        const card = document.createElement('div');
+        card.className = 'player-card';
+
+        card.innerHTML = `
+          <h3>${player.name} - ${player.score} puntos (Vidas: ${player.livesUsed}/2)</h3>
+          <input type="number" id="points-${index}" placeholder="Puntos esta ronda">
+          <div class="chinchon-check">
+            <label>
+              <input type="checkbox" id="chinchon-${index}">
+              ¿Ha hecho chinchón?
+            </label>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function finalizarRonda() {
+      let chinchonMsg = '';
+      players.forEach((player, index) => {
+        const inputPoints = document.getElementById(`points-${index}`);
+        const checkbox = document.getElementById(`chinchon-${index}`);
+        let points = parseInt(inputPoints.value) || 0;
+
+        if (checkbox.checked) {
+          chinchonMsg += `¡${player.name} ha hecho CHINCHÓN!\n`;
+          points -= 10;
+          document.getElementById("alertaChinchon").textContent = `¡${player.name} ha hecho CHINCHÓN!`;
+          setTimeout(() => {
+            document.getElementById("alertaChinchon").textContent = '';
+          }, 3000);
+        }
+
+        player.score += points;
+
+        if (player.score > 100) {
+          if (player.livesUsed < 2) {
+            // Buscar mayor puntuación restante entre jugadores activos
+            const puntuacionesValidas = players
+              .filter(p => p !== player && p.score <= 100)
+              .map(p => p.score);
+
+            const maxPuntos = puntuacionesValidas.length > 0
+              ? Math.max(...puntuacionesValidas)
+              : 100;
+
+            alert(`${player.name} ha superado los 100 puntos. Se reengancha con ${maxPuntos} puntos (vida ${player.livesUsed + 1}/2).`);
+            player.score = maxPuntos;
+            player.livesUsed += 1;
+          } else {
+            alert(`${player.name} ha sido eliminado.`);
+            player.eliminated = true;
+          }
+        }
+      });
+
+      // Filtrar eliminados
+      players = players.filter(p => !p.eliminated);
+
+      // Guardar progreso
+      localStorage.setItem('chinchon_players', JSON.stringify(players));
+      renderPlayers();
+    }
+
+    renderPlayers();
+  </script>
+</body>
+</html>
