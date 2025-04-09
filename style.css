@@ -2,7 +2,7 @@ body {
   font-family: 'Fredoka', sans-serif;
   margin: 0;
   padding: 1rem;
-  background: url('fondo_piscina.png') no-repeat center center fixed;
+  background: url(../'fondo.png') no-repeat center center fixed;
   background-size: cover;
   background-color: rgba(0, 0, 0, 0.3);
   background-blend-mode: overlay;
