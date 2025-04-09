@@ -73,8 +73,12 @@
 
       if (players.length === 1) {
   alert(`${players[0].name} ha ganado la partida. ¡Enhorabuena!`);
-  localStorage.removeItem('chinchon_players'); // borra la partida
-  window.location.href = 'index.html'; // recarga desde el principio
+  localStorage.clear(); // limpia todo
+  setTimeout(() => {
+    location.replace('index.html'); // reinicia bien
+  }, 100);
+}
+
 }
 
     }
