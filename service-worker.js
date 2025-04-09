@@ -1,19 +1,47 @@
-const cacheName = "chinchon-app-v1";
-const filesToCache = [
-  "./",
-  "./index.html",
-  "./fondo.png",
-  "./manifest.json"
+const CACHE_NAME = 'chinchon-v2'; // cambia el número cuando actualices la app
+
+const FILES_TO_CACHE = [
+  './',
+  './index.html',
+  './fondo.png',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
-self.addEventListener("install", e => {
-  e.waitUntil(
-    caches.open(cacheName).then(cache => cache.addAll(filesToCache))
+// Instalar y guardar en caché
+self.addEventListener('install', (event) => {
+  console.log('[SW] Instalando nuevo service worker...');
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(FILES_TO_CACHE);
+    })
   );
 });
 
-self.addEventListener("fetch", e => {
-  e.respondWith(
-    caches.match(e.request).then(response => response || fetch(e.request))
+// Activar y limpiar cachés antiguos
+self.addEventListener('activate', (event) => {
+  console.log('[SW] Activando service worker...');
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            console.log('[SW] Borrando caché viejo:', cache);
+            return caches.delete(cache);
+          }
+        })
+      );
+    })
+  );
+  return self.clients.claim();
+});
+
+// Interceptar peticiones
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
   );
 });
