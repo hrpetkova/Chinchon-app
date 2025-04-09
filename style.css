@@ -18,11 +18,11 @@ body {
   padding: 1rem;
   border-radius: 10px;
   max-width: 500px;
-  margin: 2rem auto; /* centrado */
+  margin: 2rem auto;
 }
 
-
-input, button {
+input[type="text"],
+input[type="number"] {
   padding: 0.7rem;
   margin: 0.3rem 0;
   width: 100%;
@@ -30,13 +30,26 @@ input, button {
   font-size: 1rem;
   border-radius: 6px;
   border: none;
+  box-sizing: border-box;
 }
 
-
 button {
+  padding: 0.7rem;
+  margin: 0.3rem 0;
+  width: 100%;
+  max-width: 100%;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
   background-color: #00c2cb;
   color: white;
   font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #0093a1;
 }
 
 .player-list {
@@ -58,7 +71,6 @@ button {
   gap: 0.5rem;
 }
 
-
 h1, h2 {
   text-align: center;
   color: #fff;
@@ -69,6 +81,7 @@ h1, h2 {
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 10px;
+  backdrop-filter: blur(5px);
 }
 
 .alerta {
