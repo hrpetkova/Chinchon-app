@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Chinchón</title>
+  
   <link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
   <style>
     body {
@@ -114,6 +114,15 @@
   <script>
     let players = [];
 
+    const savedPlayers = JSON.parse(localStorage.getItem('chinchon_players'));
+
+    if (savedPlayers && savedPlayers.length > 1) {
+      players = savedPlayers;
+      document.getElementById("inicio").style.display = "none";
+      document.getElementById("juego").style.display = "block";
+      renderPlayers();
+    }
+
     function addPlayer() {
       const nameInput = document.getElementById('playerNameInput');
       const name = nameInput.value.trim();
@@ -140,9 +149,9 @@
         alert("Se necesitan al menos 2 jugadores.");
         return;
       }
+      localStorage.setItem('chinchon_players', JSON.stringify(players));
       document.getElementById("inicio").style.display = "none";
       document.getElementById("juego").style.display = "block";
-      localStorage.setItem('chinchon_players', JSON.stringify(players));
       renderPlayers();
     }
 
