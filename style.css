@@ -50,6 +50,15 @@ button {
   margin-bottom: 0.5rem;
 }
 
+.chinchon-check {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+  gap: 0.5rem;
+}
+
+
 h1, h2 {
   text-align: center;
   color: #fff;
