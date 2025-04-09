@@ -1,62 +1,19 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chinchón App</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #d0f0ff;
-      color: #333;
-    }
-
-    .container {
-      padding: 1rem;
-      max-width: 500px;
-      margin: auto;
-    }
-
-    input, button {
-      padding: 0.7rem;
-      margin: 0.3rem 0;
-      width: 100%;
-      font-size: 1rem;
-    }
-
-    .player-list {
-      margin: 1rem 0;
-    }
-
-    .player-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-    }
-
-    #startGameBtn {
-      background: #28a745;
-      color: white;
-      border: none;
-    }
-
-    h2 {
-      margin-top: 2rem;
-      text-align: center;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chinchón - Verano</title>
+  <link href="style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <h1>Chinchón - Verano</h1>
-
-    <input type="text" id="playerNameInput" placeholder="Nombre del jugador">
+    <input type="text" id="playerNameInput" placeholder="Nombre del jugador" />
     <button onclick="addPlayer()">Añadir jugador</button>
-
     <div class="player-list" id="playerList"></div>
-
     <button id="startGameBtn" onclick="startGame()">Iniciar partida</button>
   </div>
 
@@ -67,11 +24,7 @@
       const nameInput = document.getElementById('playerNameInput');
       const name = nameInput.value.trim();
       if (name) {
-        players.push({
-          name: name,
-          score: 0,
-          livesUsed: 0
-        });
+        players.push({ name: name, score: 0, livesUsed: 0 });
         nameInput.value = '';
         updatePlayerList();
       }
@@ -93,7 +46,6 @@
         alert('Se necesitan al menos 2 jugadores');
         return;
       }
-      // Guardar jugadores en localStorage
       localStorage.setItem('chinchon_players', JSON.stringify(players));
       window.location.href = 'juego.html';
     }
