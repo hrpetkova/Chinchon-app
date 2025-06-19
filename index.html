@@ -245,6 +245,15 @@
         setTimeout(() => location.reload(), 1000);
       }
     }
+
+    // Mostrar modal de aviso de mantenimiento al abrir la app
+window.addEventListener('load', () => {
+  const modal = document.getElementById('maintenance-modal');
+  if (modal) {
+    modal.style.display = 'block';
+  }
+});
+
   </script>
 
   <!-- SERVICE WORKER CON BANNER DE ACTUALIZACIÓN -->
