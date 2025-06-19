@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chinchon-v3'; // cambia el número cuando actualices la app
+const CACHE_NAME = 'mantenimiento'; // cambia el número cuando actualices la app
 
 const FILES_TO_CACHE = [
   './',
