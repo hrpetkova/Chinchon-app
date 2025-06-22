@@ -104,6 +104,25 @@
   <div class="container" id="inicio">
     <h1>Chinchón</h1>
     <input type="text" id="playerNameInput" placeholder="Nombre del jugador" />
+
+    <!-- Selección de avatar (emoji o foto) -->
+  <label>Elige tu avatar (emoji o foto):</label>
+  <select id="avatarSelect">
+    <option value="🧔">🧔</option>
+    <option value="👩">👩</option>
+    <option value="🧙">🧙</option>
+    <option value="🤠">🤠</option>
+    <option value="🐱">🐱</option>
+    <option value="👽">👽</option>
+  </select>
+
+<div style="text-align:center; margin-top:0.5rem;">
+  <video id="video" autoplay playsinline width="150" height="120" style="border-radius: 10px; display:block; margin: 0.5rem auto;"></video>
+  <button onclick="capturarFoto()">📸 Sacar foto</button>
+  <canvas id="canvas" width="150" height="120" style="display:none;"></canvas>
+</div>
+
+    
     <button onclick="addPlayer()">Añadir jugador</button>
     <div class="player-list" id="playerList"></div>
     <button id="startGameBtn" onclick="startGame()">Iniciar partida</button>
@@ -155,6 +174,28 @@
   <script>
     let players = [];
 
+    let avatarFotoBase64 = null;
+
+  // Activar cámara al cargar
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      document.getElementById('video').srcObject = stream;
+    })
+    .catch(error => {
+      console.warn('No se pudo acceder a la cámara:', error);
+    });
+
+  function capturarFoto() {
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    avatarFotoBase64 = canvas.toDataURL('image/png');
+    alert("✅ Foto capturada. Se usará como avatar.");
+  }
+
+    
+
     const savedPlayers = JSON.parse(localStorage.getItem('chinchon_players'));
     if (savedPlayers && savedPlayers.length > 1) {
       players = savedPlayers;
@@ -165,13 +206,24 @@
 
     function addPlayer() {
       const nameInput = document.getElementById('playerNameInput');
+      const emojiInput = document.getElementById('avatarSelect');
       const name = nameInput.value.trim();
-      if (name) {
-        players.push({ name: name, score: 0, livesUsed: 0 });
-        nameInput.value = '';
-        updatePlayerList();
+      const emoji = emojiInput.value;
+
+      if (!name) {
+        alert("❗ Por favor, introduce un nombre.");
+        return;
       }
+
+      const avatar = avatarFotoBase64 ? avatarFotoBase64 : emoji;
+
+      players.push({ name: name, score: 0, livesUsed: 0, avatar: avatar });
+
+      nameInput.value = '';
+      avatarFotoBase64 = null;
+      updatePlayerList();
     }
+
 
     function updatePlayerList() {
       const list = document.getElementById('playerList');
@@ -202,7 +254,7 @@
         const card = document.createElement('div');
         card.className = 'player-card';
         card.innerHTML = `
-          <h3>🌞 ${player.name} - ${player.score} puntos (Vidas: ${player.livesUsed}/2)</h3>
+          <h3><img src="${player.avatar}" style="width:30px; height:30px; border-radius:50%; vertical-align:middle;"> ${player.name} - ${player.score} puntos (Vidas: ${player.livesUsed}/2)</h3>
           <input type="number" id="points-${index}" placeholder="Puntos esta ronda" />
           <div class="chinchon-check">
             <label>
