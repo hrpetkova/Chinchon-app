@@ -132,6 +132,23 @@
 
     
     <button onclick="addPlayer()">Añadir jugador</button>
+
+<input type="text" id="playerNameInput" placeholder="Nombre del jugador" />
+<select id="emojiSelect" style="display:none;">
+  <option value="😀">😀</option>
+  <option value="🧔">🧔</option>
+  <option value="👩">👩</option>
+  <option value="🤠">🤠</option>
+  <option value="🧙">🧙</option>
+  <option value="🐱">🐱</option>
+  <option value="👽">👽</option>
+</select>
+
+<!-- Cámara oculta -->
+<video id="video" autoplay playsinline width="150" height="120" style="display:none; border-radius: 10px;"></video>
+<canvas id="canvas" width="150" height="120" style="display:none;"></canvas>
+
+    
     <div class="player-list" id="playerList"></div>
     <button id="startGameBtn" onclick="startGame()">Iniciar partida</button>
   </div>
@@ -180,6 +197,58 @@
 </div>
   <!-- LÓGICA DE JUEGO -->
   <script>
+
+let avatarFotoBase64 = null;
+let avatarFinal = '😀'; // valor inicial
+
+document.getElementById('avatarPreview').addEventListener('click', () => {
+  const menu = document.getElementById('avatarMenu');
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+});
+
+function elegirEmoji() {
+  const emoji = prompt("Elige un emoji para tu avatar (ej: 😺, 👽, 🧙)");
+  if (emoji) {
+    avatarFinal = emoji;
+    avatarFotoBase64 = null;
+    actualizarAvatarPreview();
+  }
+  document.getElementById('avatarMenu').style.display = 'none';
+}
+
+function activarCamara() {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+      const video = document.getElementById('video');
+      video.style.display = 'block';
+      video.srcObject = stream;
+      setTimeout(() => capturarFoto(), 1500); // espera breve y captura
+    })
+    .catch(error => alert("No se pudo acceder a la cámara: " + error));
+}
+
+function capturarFoto() {
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  avatarFotoBase64 = canvas.toDataURL('image/png');
+  avatarFinal = avatarFotoBase64;
+  document.getElementById('video').style.display = 'none';
+  document.getElementById('avatarMenu').style.display = 'none';
+  actualizarAvatarPreview();
+}
+
+function actualizarAvatarPreview() {
+  const preview = document.getElementById('avatarPreview');
+  if (avatarFotoBase64) {
+    preview.innerHTML = `<img src="${avatarFotoBase64}" style="width:100%; height:100%; object-fit: cover;" />`;
+  } else {
+    preview.textContent = avatarFinal;
+  }
+}
+
+    
     let players = [];
 
     let avatarFotoBase64 = null;
