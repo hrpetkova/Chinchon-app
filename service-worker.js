@@ -1,4 +1,4 @@
-const CACHE_NAME = 'newskin'; // cambia el número cuando actualices la app
+const CACHE_NAME = 'chinchon_v3'; // cambia el número cuando actualices la app
 
 const FILES_TO_CACHE = [
   './',
