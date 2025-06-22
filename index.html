@@ -282,15 +282,28 @@ function actualizarAvatarPreview() {
     }
 
     function addPlayer() {
-      const nameInput = document.getElementById('playerNameInput');
-      const emojiInput = document.getElementById('avatarSelect');
-      const name = nameInput.value.trim();
-      const emoji = emojiInput.value;
+  const nameInput = document.getElementById('playerNameInput');
+  const name = nameInput.value.trim();
 
-      if (!name) {
-        alert("❗ Por favor, introduce un nombre.");
-        return;
-      }
+  if (!name) {
+    alert("❗ Introduce un nombre.");
+    return;
+  }
+
+  players.push({
+    name: name,
+    score: 0,
+    livesUsed: 0,
+    avatar: avatarFinal
+  });
+
+  nameInput.value = '';
+  avatarFotoBase64 = null;
+  avatarFinal = '😀';
+  actualizarAvatarPreview();
+  updatePlayerList();
+}
+
 
       const avatar = avatarFotoBase64 ? avatarFotoBase64 : emoji;
 
