@@ -92,6 +92,11 @@
     h1, h2 {
       text-align: center;
     }
+
+    #emojiGrid span {
+      cursor: pointer;
+      user-select: none;
+    }
   </style>
 
   <link rel="manifest" href="manifest.json">
@@ -103,7 +108,6 @@
   <div class="container" id="inicio">
     <h1>Chinchón</h1>
 
-    <!-- Selector visual de avatar -->
     <div id="avatarSelector" style="text-align: center; margin-bottom: 1rem;">
       <div id="avatarPreview" style="
         width: 80px;
@@ -120,7 +124,6 @@
         color: black;
       ">😀</div>
 
-      <!-- Menú emergente -->
       <div id="avatarMenu" style="display: none; margin-top: 0.5rem;">
         <div id="emojiGrid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; font-size: 1.8rem; margin-bottom: 0.5rem;">
           <span onclick="setEmoji('😀')">😀</span>
@@ -136,13 +139,11 @@
         <button onclick="activarCamara()">📸 Foto</button>
       </div>
 
-
       <video id="video" autoplay playsinline width="150" height="120" style="display:none; margin:auto; border-radius:10px;"></video>
       <canvas id="canvas" width="150" height="120" style="display:none;"></canvas>
     </div>
 
     <input type="text" id="playerNameInput" placeholder="Nombre del jugador" />
-
     <button onclick="addPlayer()">Añadir jugador</button>
     <div class="player-list" id="playerList"></div>
     <button id="startGameBtn" onclick="startGame()">Iniciar partida</button>
@@ -155,7 +156,6 @@
     <div id="alertaChinchon" class="alerta"></div>
   </div>
 
-  <!-- MODAL DE AVISO DE MANTENIMIENTO -->
   <div id="maintenance-modal" style="
     display: none;
     position: fixed;
@@ -191,7 +191,6 @@
     </div>
   </div>
 
-  <!-- LÓGICA DE JUEGO -->
   <script>
     let players = [];
     let avatarFotoBase64 = null;
@@ -215,11 +214,11 @@
     function setEmoji(emoji) {
       avatarFotoBase64 = null;
       avatarFinal = emoji;
-        actualizarAvatarPreview();
-      document.getElementById('emojiGrid').style.display = 'none';
-      avatarMenu.style.display = 'none';
+      actualizarAvatarPreview();
+      setTimeout(() => {
+        avatarMenu.style.display = 'none';
+      }, 100);
     }
-
 
     function activarCamara() {
       const video = document.getElementById('video');
@@ -361,12 +360,8 @@
       }
     }
 
-    // Mostrar modal de aviso de mantenimiento al abrir la app
     window.addEventListener('load', () => {
-      const modal = document.getElementById('maintenance-modal');
-      if (modal) {
-        modal.style.display = 'block';
-      }
+      document.getElementById('maintenance-modal').style.display = 'block';
     });
   </script>
 </body>
