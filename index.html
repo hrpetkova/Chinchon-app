@@ -289,17 +289,23 @@
       localStorage.setItem('chinchon_players', JSON.stringify(players));
       document.getElementById("inicio").style.display = "none";
       document.getElementById("juego").style.display = "block";
+      players = JSON.parse(localStorage.getItem('chinchon_players')); // ¡Recargar desde localStorage!
       renderPlayers();
     }
+
 
     function renderPlayers() {
       const container = document.getElementById('playersContainer');
       container.innerHTML = '';
       players.forEach((player, index) => {
+        const avatarHTML = player.avatar.startsWith('data:image') ?
+          `<img src="${player.avatar}" style="width:30px; height:30px; border-radius:50%; vertical-align:middle;">` :
+          `<span style="font-size: 1.8rem; margin-right: 0.5rem;">${player.avatar}</span>`;
+
         const card = document.createElement('div');
         card.className = 'player-card';
         card.innerHTML = `
-          <h3><img src="${player.avatar}" style="width:30px; height:30px; border-radius:50%; vertical-align:middle;"> ${player.name} - ${player.score} puntos (Vidas: ${player.livesUsed}/2)</h3>
+          <h3>${avatarHTML} ${player.name} - ${player.score} puntos (Vidas: ${player.livesUsed}/2)</h3>
           <input type="number" id="points-${index}" placeholder="Puntos esta ronda" />
           <div class="chinchon-check">
             <label>
@@ -311,6 +317,7 @@
         container.appendChild(card);
       });
     }
+
 
     function finalizarRonda() {
       if (players.length < 2) {
