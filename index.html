@@ -250,14 +250,31 @@
       const video = document.getElementById('video');
       const canvas = document.getElementById('canvas');
       const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const videoWidth = video.videoWidth;
+      const videoHeight = video.videoHeight;
+      const side = Math.min(videoWidth, videoHeight); // Lado del cuadrado
+
+      const offsetX = (videoWidth - side) / 2;
+      const offsetY = (videoHeight - side) / 2;
+
+  // Ajustar canvas a cuadrado
+      canvas.width = side;
+      canvas.height = side;
+
+  // Dibujar solo el área cuadrada centrada
+      ctx.drawImage(video, offsetX, offsetY, side, side, 0, 0, side, side);
+
       avatarFotoBase64 = canvas.toDataURL('image/png');
       avatarFinal = avatarFotoBase64;
+
+  // Apagar cámara
       video.srcObject.getTracks().forEach(track => track.stop());
       video.style.display = 'none';
       avatarMenu.style.display = 'none';
       actualizarAvatarPreview();
     }
+
 
     function addPlayer() {
       const nameInput = document.getElementById('playerNameInput');
