@@ -122,9 +122,20 @@
 
       <!-- Menú emergente -->
       <div id="avatarMenu" style="display: none; margin-top: 0.5rem;">
-        <button onclick="elegirEmoji()">😀 Emoji</button>
+        <div id="emojiGrid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; font-size: 1.8rem; margin-bottom: 0.5rem;">
+          <span onclick="setEmoji('😀')">😀</span>
+          <span onclick="setEmoji('😎')">😎</span>
+          <span onclick="setEmoji('🤪')">🤪</span>
+          <span onclick="setEmoji('👽')">👽</span>
+          <span onclick="setEmoji('👨‍🦰')">👨‍🦰</span>
+          <span onclick="setEmoji('👩🏽‍🦱')">👩🏽‍🦱</span>
+          <span onclick="setEmoji('🐶')">🐶</span>
+          <span onclick="setEmoji('🐱')">🐱</span>
+          <span onclick="setEmoji('👾')">👾</span>
+        </div>
         <button onclick="activarCamara()">📸 Foto</button>
       </div>
+
 
       <video id="video" autoplay playsinline width="150" height="120" style="display:none; margin:auto; border-radius:10px;"></video>
       <canvas id="canvas" width="150" height="120" style="display:none;"></canvas>
@@ -201,15 +212,14 @@
       }
     }
 
-    function elegirEmoji() {
-      const emoji = prompt("Escribe tu emoji para el avatar:");
-      if (emoji) {
-        avatarFotoBase64 = null;
-        avatarFinal = emoji;
+    function setEmoji(emoji) {
+      avatarFotoBase64 = null;
+      avatarFinal = emoji;
         actualizarAvatarPreview();
-      }
+      document.getElementById('emojiGrid').style.display = 'none';
       avatarMenu.style.display = 'none';
     }
+
 
     function activarCamara() {
       const video = document.getElementById('video');
