@@ -260,7 +260,7 @@
         name: name,
         score: 0,
         livesUsed: 0,
-        avatar: avatarFinal
+        avatar: String(avatarFinal)
       });
 
       nameInput.value = '';
@@ -298,9 +298,12 @@
       const container = document.getElementById('playersContainer');
       container.innerHTML = '';
       players.forEach((player, index) => {
-        const avatarHTML = player.avatar.startsWith('data:image') ?
-          `<img src="${player.avatar}" style="width:30px; height:30px; border-radius:50%; vertical-align:middle;">` :
-          `<span style="font-size: 1.8rem; margin-right: 0.5rem;">${player.avatar}</span>`;
+        const isImage = typeof player.avatar === 'string' && player.avatar.startsWith('data:image');
+
+        const avatarHTML = isImage
+          ? `<img src="${player.avatar}" style="width:30px; height:30px; border-radius:50%; vertical-align:middle;">`
+          : `<span style="font-size: 1.8rem; margin-right: 0.5rem;">${player.avatar}</span>`;
+
 
         const card = document.createElement('div');
         card.className = 'player-card';
