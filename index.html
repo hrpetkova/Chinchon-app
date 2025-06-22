@@ -205,7 +205,19 @@
 
     function actualizarAvatarPreview() {
       if (avatarFotoBase64) {
-        avatarPreview.innerHTML = `<img src="${avatarFotoBase64}" style="width:100%; height:100%; object-fit: cover;" />`;
+          avatarPreview.innerHTML = `
+            <div style="
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+              overflow: hidden;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            ">
+              <img src="${avatarFotoBase64}" style="width: 100%; height: 100%; object-fit: cover;" />
+            </div>`;
+
       } else {
         avatarPreview.textContent = avatarFinal;
       }
