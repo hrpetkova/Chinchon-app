@@ -105,22 +105,30 @@
     <h1>Chinchón</h1>
     <input type="text" id="playerNameInput" placeholder="Nombre del jugador" />
 
-    <!-- Selección de avatar (emoji o foto) -->
-  <label>Elige tu avatar (emoji o foto):</label>
-  <select id="avatarSelect">
-    <option value="🧔">🧔</option>
-    <option value="👩">👩</option>
-    <option value="🧙">🧙</option>
-    <option value="🤠">🤠</option>
-    <option value="🐱">🐱</option>
-    <option value="👽">👽</option>
-  </select>
+    <!-- Selector visual de avatar -->
+<div id="avatarSelector" style="text-align: center; margin-bottom: 1rem;">
+  <div id="avatarPreview" style="
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    background-color: white;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 2.5rem;
+    color: black;
+  ">😀</div>
 
-<div style="text-align:center; margin-top:0.5rem;">
-  <video id="video" autoplay playsinline width="150" height="120" style="border-radius: 10px; display:block; margin: 0.5rem auto;"></video>
-  <button onclick="capturarFoto()">📸 Sacar foto</button>
-  <canvas id="canvas" width="150" height="120" style="display:none;"></canvas>
+  <!-- Menú emergente -->
+  <div id="avatarMenu" style="display: none; margin-top: 0.5rem;">
+    <button onclick="elegirEmoji()">😀 Elegir emoji</button>
+    <button onclick="activarCamara()">📸 Tomar foto</button>
+  </div>
 </div>
+
 
     
     <button onclick="addPlayer()">Añadir jugador</button>
