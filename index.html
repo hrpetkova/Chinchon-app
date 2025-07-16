@@ -176,8 +176,8 @@
       text-align: center;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     ">
-      <h2>⚠️ Aviso de mantenimiento</h2>
-      <p>Estamos trabajando en mejoras del juego. Durante los próximos días podrías experimentar pequeños fallos. ¡Gracias por tu comprensión!</p>
+      <h2>🚨 Aviso de mantenimiento</h2>
+      <p>Se estan realizando cambios de funcionalidad. ¡Gracias por tu comprensión!</p>
       <button onclick="document.getElementById('maintenance-modal').style.display='none'" style="
         margin-top: 15px;
         padding: 10px 20px;
@@ -354,7 +354,7 @@
         const card = document.createElement('div');
         card.className = 'player-card';
         card.innerHTML = `
-          <h3>${avatarHTML} ${player.name} - ${player.score} puntos (Vidas: ${player.livesUsed}/2)</h3>
+          <h3>${avatarHTML} ${player.name}  ${player.score} puntos (Vidas: ${player.livesUsed}/2)</h3>
           <input type="number" id="points-${index}" placeholder="Puntos esta ronda" />
           <div class="chinchon-check">
             <label>
