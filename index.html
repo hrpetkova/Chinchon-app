@@ -193,6 +193,22 @@
 
   <script>
     let players = [];
+
+    const partidaActiva = localStorage.getItem('chinchon_partida_activa') === 'true';
+    const savedPlayers = JSON.parse(localStorage.getItem('chinchon_players'));
+    
+    if (partidaActiva && savedPlayers && savedPlayers.length > 1) {
+      players = savedPlayers;
+      document.getElementById("inicio").style.display = "none";
+      document.getElementById("juego").style.display = "block";
+      // Esta parte espera a que la página esté totalmente cargada
+      window.addEventListener("DOMContentLoaded", () => {
+        renderPlayers();
+      });
+    }
+
+
+    
     let avatarFotoBase64 = null;
     let avatarFinal = '😀';
 
@@ -316,6 +332,7 @@
         return;
       }
       localStorage.setItem('chinchon_players', JSON.stringify(players));
+      localStorage.setItem('chinchon_partida_activa', 'true');
       document.getElementById("inicio").style.display = "none";
       document.getElementById("juego").style.display = "block";
       players = JSON.parse(localStorage.getItem('chinchon_players')); // ¡Recargar desde localStorage!
@@ -359,7 +376,9 @@
     function finalizarRonda() {
       if (players.length < 2) {
         alert("No hay suficientes jugadores para continuar.");
-        localStorage.clear();
+        localStorage.removeItem('chinchon_players');
+        localStorage.removeItem('chinchon_partida_activa');
+
         location.reload();
         return;
       }
