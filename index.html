@@ -372,45 +372,46 @@
       });
     }
 
-
     function finalizarRonda() {
       if (players.length < 2) {
         alert("No hay suficientes jugadores para continuar.");
-        localStorage.removeItem('chinchon_players');
-        localStorage.removeItem('chinchon_partida_activa');
-
+        localStorage.clear();
         location.reload();
         return;
       }
-
+    
+      // 1. Actualizar puntos de todos
       players.forEach((player, index) => {
         const inputPoints = document.getElementById(`points-${index}`);
-        const checkbox = document.getElementById(`chinchon-${index}`);
+        const chinchon = document.getElementById(`chinchon-${index}`);
         const descarte = document.getElementById(`descarte-${index}`);
+    
         let points = parseInt(inputPoints.value) || 0;
-
-        if (checkbox.checked) {
+    
+        if (chinchon && chinchon.checked) {
           points -= 10;
           document.getElementById("alertaChinchon").textContent = `¡${player.name} ha hecho CHINCHÓN!`;
           setTimeout(() => {
             document.getElementById("alertaChinchon").textContent = '';
           }, 3000);
         }
-
-        if (descarte.checked) {
+    
+        if (descarte && descarte.checked) {
           points -= 5;
-          document.getElementById("alertaChinchon").textContent = `¡${player.name} ha hecho DESCARTE!`;
-          setTimeout(() => {
-            document.getElementById("alertaChinchon").textContent = '';
-          }, 3000);
         }
-
-
+    
         player.score += points;
-
+      });
+    
+      // 2. Procesar reenganches y eliminaciones
+      players.forEach((player) => {
         if (player.score > 100) {
           if (player.livesUsed < 2) {
-            const puntuacionesValidas = players.filter(p => p !== player && p.score <= 100).map(p => p.score);
+            // Ahora los puntos del resto ya están actualizados
+            const puntuacionesValidas = players
+              .filter(p => p !== player && !p.eliminated && p.score <= 100)
+              .map(p => p.score);
+    
             const maxPuntos = puntuacionesValidas.length > 0 ? Math.max(...puntuacionesValidas) : 100;
             alert(`${player.name} se reengancha con ${maxPuntos} puntos (vida ${player.livesUsed + 1}/2).`);
             player.score = maxPuntos;
@@ -421,20 +422,21 @@
           }
         }
       });
-
+    
+      // 3. Eliminar los jugadores que han sido eliminados
       players = players.filter(p => !p.eliminated);
+    
       localStorage.setItem('chinchon_players', JSON.stringify(players));
       renderPlayers();
-
-      const jugadoresVivos = players.filter(p => !p.eliminated);
-
-      if (jugadoresVivos.length === 1 && jugadoresVivos[0].score <= 100) {
-        alert(`${jugadoresVivos[0].name} ha ganado la partida. ¡Enhorabuena!`);
+    
+      if (players.length === 1) {
+        alert(`${players[0].name} ha ganado la partida. ¡Enhorabuena!`);
         localStorage.clear();
         setTimeout(() => location.reload(), 1000);
       }
-
     }
+
+   
 
     window.addEventListener('load', () => {
       document.getElementById('maintenance-modal').style.display = 'block';
