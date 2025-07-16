@@ -344,8 +344,13 @@
               <input type="checkbox" id="chinchon-${index}" />
               ¿Chinchón?
             </label>
+            <label>
+              <input type="checkbox" id="descarte-${index}" />
+              ¿Descarte?
+            </label>
           </div>
         `;
+
         container.appendChild(card);
       });
     }
@@ -362,6 +367,7 @@
       players.forEach((player, index) => {
         const inputPoints = document.getElementById(`points-${index}`);
         const checkbox = document.getElementById(`chinchon-${index}`);
+        const descarte = document.getElementById(`descarte-${index}`);
         let points = parseInt(inputPoints.value) || 0;
 
         if (checkbox.checked) {
@@ -371,6 +377,15 @@
             document.getElementById("alertaChinchon").textContent = '';
           }, 3000);
         }
+
+        if (descarte.checked) {
+          points -= 5;
+          document.getElementById("alertaChinchon").textContent = `¡${player.name} ha hecho DESCARTE!`;
+          setTimeout(() => {
+            document.getElementById("alertaChinchon").textContent = '';
+          }, 3000);
+        }
+
 
         player.score += points;
 
@@ -392,11 +407,14 @@
       localStorage.setItem('chinchon_players', JSON.stringify(players));
       renderPlayers();
 
-      if (players.length === 1) {
-        alert(`${players[0].name} ha ganado la partida. ¡Enhorabuena!`);
+      const jugadoresVivos = players.filter(p => !p.eliminated);
+
+      if (jugadoresVivos.length === 1 && jugadoresVivos[0].score <= 100) {
+        alert(`${jugadoresVivos[0].name} ha ganado la partida. ¡Enhorabuena!`);
         localStorage.clear();
         setTimeout(() => location.reload(), 1000);
       }
+
     }
 
     window.addEventListener('load', () => {
