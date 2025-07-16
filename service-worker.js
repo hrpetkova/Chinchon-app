@@ -9,37 +9,36 @@ const FILES_TO_CACHE = [
   './icon-512.png'
 ];
 
-// Instalación del Service Worker: se cachean los archivos definidos
 self.addEventListener('install', (event) => {
-  console.log('[SW] Instalando service worker...');
+  self.skipWaiting(); // 👈 fuerza activación inmediata
+
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Caché creada:', CACHE_NAME);
-      return cache.addAll(FILES_TO_CACHE);
-    }).catch((error) => {
-      console.error('[SW] Error al cachear archivos:', error);
+      return cache.addAll([
+        '/', // o '/index.html' si usas rutas relativas
+        '/index.html',
+        '/main.js',
+        '/style.css',
+        '/icon.png', // lo que sea que uses
+      ]);
     })
   );
-  self.skipWaiting(); // Permite que el nuevo SW tome control inmediatamente
 });
 
-// Activación: elimina versiones anteriores del caché
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activando nuevo service worker...');
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((name) => {
-          if (name !== CACHE_NAME) {
-            console.log('[SW] Borrando caché antiguo:', name);
-            return caches.delete(name);
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key); // 🔥 elimina caches antiguos
           }
         })
-      );
-    })
+      )
+    ).then(() => self.clients.claim()) // 👈 controla inmediatamente
   );
-  return self.clients.claim(); // Toma el control de todas las páginas
 });
+
 
 // Interceptar todas las peticiones
 self.addEventListener('fetch', (event) => {
