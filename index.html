@@ -409,8 +409,9 @@
           if (player.livesUsed < 2) {
             // Ahora los puntos del resto ya están actualizados
             const puntuacionesValidas = players
-              .filter(p => p !== player && !p.eliminated && p.score <= 100)
-              .map(p => p.score);
+              .filter(p => p !== player && !p.eliminated)
+              .map(p => p.score <= 100 ? p.score : 100); // limitamos a 100
+
     
             const maxPuntos = puntuacionesValidas.length > 0 ? Math.max(...puntuacionesValidas) : 100;
             alert(`${player.name} se reengancha con ${maxPuntos} puntos (vida ${player.livesUsed + 1}/2).`);
