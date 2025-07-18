@@ -380,7 +380,9 @@
         return;
       }
     
-      // 1. Actualizar puntos de todos
+      const nuevosPuntos = [];
+    
+      // 1. Calcular nuevos puntos
       players.forEach((player, index) => {
         const inputPoints = document.getElementById(`points-${index}`);
         const chinchon = document.getElementById(`chinchon-${index}`);
@@ -400,18 +402,21 @@
           points -= 5;
         }
     
-        player.score += points;
+        nuevosPuntos.push(player.score + points);
       });
     
-      // 2. Procesar reenganches y eliminaciones
+      // 2. Asignar nuevos puntos
+      players.forEach((player, i) => {
+        player.score = nuevosPuntos[i];
+      });
+    
+      // 3. Reenganches
       players.forEach((player) => {
         if (player.score > 100) {
           if (player.livesUsed < 2) {
-            // Ahora los puntos del resto ya están actualizados
             const puntuacionesValidas = players
               .filter(p => p !== player && !p.eliminated)
-              .map(p => p.score <= 100 ? p.score : 100); // limitamos a 100
-
+              .map(p => p.score <= 100 ? p.score : 100);
     
             const maxPuntos = puntuacionesValidas.length > 0 ? Math.max(...puntuacionesValidas) : 100;
             alert(`${player.name} se reengancha con ${maxPuntos} puntos (vida ${player.livesUsed + 1}/2).`);
@@ -424,7 +429,6 @@
         }
       });
     
-      // 3. Eliminar los jugadores que han sido eliminados
       players = players.filter(p => !p.eliminated);
     
       localStorage.setItem('chinchon_players', JSON.stringify(players));
@@ -436,6 +440,7 @@
         setTimeout(() => location.reload(), 1000);
       }
     }
+
 
    
 
