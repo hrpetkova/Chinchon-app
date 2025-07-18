@@ -6,124 +6,134 @@
   <title>Chinchón</title>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Fredoka', sans-serif;
-      margin: 0;
-      padding: 1rem;
-      background: url('fondo.png') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
-    }
+  :root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --card-color: rgba(0, 0, 0, 0.6);
+    --button-bg: #00c2cb;
+    --button-hover: #0093a1;
+    --input-bg: #ffffff;
+    --input-text: #000000;
+    --border-color: transparent;
+    --highlight-color: yellow;
+    --background-image: url('fondo.png');
+  }
 
-    * {
-      box-sizing: border-box;
-    }
+  body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #f5f5f5;
+    --card-color: rgba(255, 255, 255, 0.1);
+    --button-bg: #333;
+    --button-hover: #555;
+    --input-bg: #1a1a1a;
+    --input-text: #f5f5f5;
+    --border-color: #777;
+    --highlight-color: #ffe600;
+    --background-image: none; /* o una imagen oscura si tienes */
+  }
 
-    .container {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 1rem;
-      border-radius: 10px;
-      max-width: 500px;
-      margin: 2rem auto;
-    }
+  * {
+    box-sizing: border-box;
+  }
 
-    input, button {
-      padding: 0.7rem;
-      margin: 0.3rem 0;
-      width: 100%;
-      font-size: 1rem;
-      border-radius: 6px;
-      border: none;
-    }
+  body {
+    font-family: 'Fredoka', sans-serif;
+    margin: 0;
+    padding: 1rem;
+    background: var(--background-image) no-repeat center center fixed;
+    background-color: var(--bg-color);
+    background-size: cover;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-    button {
-      background-color: #00c2cb;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+  .container {
+    background: var(--card-color);
+    padding: 1rem;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 2rem auto;
+    transition: background-color 0.3s ease;
+  }
 
-    button:hover {
-      background-color: #0093a1;
-    }
+  input, button {
+    padding: 0.7rem;
+    margin: 0.3rem 0;
+    width: 100%;
+    font-size: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-    .player-list {
-      margin: 1rem 0;
-    }
+  button {
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-    .player-item {
-      background: rgba(255,255,255,0.2);
-      padding: 0.5rem;
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
-    }
+  button:hover {
+    background-color: var(--button-hover);
+  }
 
-    .player-card {
-      background: rgba(255,255,255,0.2);
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 10px;
-      backdrop-filter: blur(5px);
-    }
+  input, select {
+    background-color: var(--input-bg);
+    color: var(--input-text);
+  }
 
-    .chinchon-check {
-      margin-top: 0.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      font-size: 0.95rem;
-      gap: 0.1rem;
-    }
+  .player-list {
+    margin: 1rem 0;
+  }
 
-    .alerta {
-      font-weight: bold;
-      color: yellow;
-      font-size: 1.2rem;
-      text-align: center;
-      margin-top: 1rem;
-      animation: flash 0.5s alternate infinite;
-    }
+  .player-item {
+    background: var(--card-color);
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+  }
 
-    @keyframes flash {
-      from { opacity: 1; }
-      to { opacity: 0.2; }
-    }
+  .player-card {
+    background: var(--card-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+  }
 
-    h1, h2 {
-      text-align: center;
-    }
+  .chinchon-check {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    gap: 0.1rem;
+  }
 
-    #emojiGrid span {
-      cursor: pointer;
-      user-select: none;
-    }
+  .alerta {
+    font-weight: bold;
+    color: var(--highlight-color);
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 1rem;
+    animation: flash 0.5s alternate infinite;
+  }
 
-    :root {
-      --bg-color: #ffffff;
-      --text-color: #000000;
-      --card-color: #e3f3f5;
-    }
-    
-    .dark-mode {
-      --bg-color: #121212;
-      --text-color: #f5f5f5;
-      --card-color: #1e1e1e;
-    }
-    
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    
-    .card, .jugador, .contenedor {
-      background-color: var(--card-color);
-      transition: background-color 0.3s ease;
-    }
-  
+  @keyframes flash {
+    from { opacity: 1; }
+    to { opacity: 0.2; }
+  }
 
-    
-  </style>
+  h1, h2 {
+    text-align: center;
+  }
+
+  #emojiGrid span {
+    cursor: pointer;
+    user-select: none;
+  }
+</style>
+
 
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon-192.png" />
@@ -132,9 +142,8 @@
 
 <body>
 
-  <button id="toggle-theme" style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
-    🌙 Tema Oscuro
-  </button>
+  <button onclick="document.body.classList.toggle('dark-mode')">🌙 Cambiar tema</button>
+
 
   
   <div class="container" id="inicio">
