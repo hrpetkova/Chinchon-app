@@ -17,6 +17,10 @@
     --border-color: transparent;
     --highlight-color: yellow;
     --background-image: url('fondo.png');
+
+    /* Nuevas variables para consola */
+    --log-bg: #eaeaea;
+    --log-text: #000000;
   }
 
   body.dark-mode {
@@ -29,7 +33,11 @@
     --input-text: #f5f5f5;
     --border-color: #777;
     --highlight-color: #ffe600;
-    --background-image: url('oscuro.png'); /* o una imagen oscura si tienes */
+    --background-image: url('oscuro.png');
+
+    /* Nuevas variables para consola */
+    --log-bg: #1a1a1a;
+    --log-text: #ffffff;
   }
 
   * {
@@ -56,7 +64,8 @@
     transition: background-color 0.3s ease;
   }
 
-  input, button {
+  input,
+  button {
     padding: 0.7rem;
     margin: 0.3rem 0;
     width: 100%;
@@ -77,7 +86,8 @@
     background-color: var(--button-hover);
   }
 
-  input, select {
+  input,
+  select {
     background-color: var(--input-bg);
     color: var(--input-text);
   }
@@ -120,11 +130,17 @@
   }
 
   @keyframes flash {
-    from { opacity: 1; }
-    to { opacity: 0.2; }
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0.2;
+    }
   }
 
-  h1, h2 {
+  h1,
+  h2 {
     text-align: center;
   }
 
@@ -132,8 +148,9 @@
     cursor: pointer;
     user-select: none;
   }
-  
-   #toggleTheme {
+
+  /* Botón de tema */
+  #toggleTheme {
     position: fixed;
     bottom: 16px;
     right: 16px;
@@ -142,17 +159,34 @@
     font-size: 1.8rem;
     cursor: pointer;
     z-index: 999;
-    transition: transform 0.2s;
+    transition: transform 0.2s, filter 0.3s ease;
+    color: var(--text-color);
+    padding: 0.4rem;
+    border-radius: 50%;
   }
-  
+
   #toggleTheme:hover {
     transform: scale(1.2);
+    filter: brightness(1.2);
   }
 
-
-
-    
+  /* Estilo para el log/consola */
+  #log {
+    background-color: var(--log-bg);
+    color: var(--log-text);
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    max-height: 200px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    margin-top: 1rem;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 </style>
+
 
 
   <link rel="manifest" href="manifest.json">
