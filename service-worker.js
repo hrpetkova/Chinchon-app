@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chinchon_v8'; // Actualiza este valor para invalidar la caché antigua
+const CACHE_NAME = 'chinchon_v9'; // Actualiza este valor para invalidar la caché antigua
 
 const FILES_TO_CACHE = [
   './',
