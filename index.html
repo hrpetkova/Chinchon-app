@@ -366,6 +366,11 @@
     <h2>Ronda Actual</h2>
     <div id="playersContainer"></div>
     <button onclick="finalizarRonda()">Finalizar Ronda</button>
+    <button onclick="abandonarPartida()" style="
+      background: linear-gradient(135deg, #c0392b, #922b21);
+      box-shadow: 0 4px 15px rgba(192, 57, 43, 0.4);
+      margin-top: 0.5rem;
+    ">💀 Abandonar partida</button>
     <div id="alertaChinchon" class="alerta"></div>
   </div>
 
@@ -564,6 +569,13 @@
       });
     }
 
+    function abandonarPartida() {
+      if (confirm('⚠️ ¿Seguro que quieres abandonar la partida? Se perderán todos los datos.')) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+
     function finalizarRonda() {
       if (players.length < 2) {
         alert("No hay suficientes jugadores para continuar.");
@@ -627,15 +639,23 @@
       });
     
       players = players.filter(p => !p.eliminated);
-    
+
       localStorage.setItem('chinchon_players', JSON.stringify(players));
-      renderPlayers();
-    
-      if (players.length === 1) {
-        alert(`${players[0].name} ha ganado la partida. ¡Enhorabuena!`);
+
+      // Comprobar ganador ANTES de renderizar para no mostrar inputs innecesarios
+      if (players.length <= 1) {
+        if (players.length === 1) {
+          alert(`🏆 ¡${players[0].name} ha ganado la partida! ¡Enhorabuena!`);
+        } else {
+          // Todos eliminados en la misma ronda: empate técnico
+          alert('¡Increíble! Todos los jugadores han sido eliminados en la misma ronda. ¡Empate!');
+        }
         localStorage.clear();
         setTimeout(() => location.reload(), 1000);
+        return;
       }
+
+      renderPlayers();
     }
 
     const themeBtn = document.getElementById("toggle-theme");
