@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chinchon_v10'; // Actualiza este valor para invalidar la caché antigua
+const CACHE_NAME = 'chinchon_v11'; // Actualiza este valor para invalidar la caché antigua
 
 const FILES_TO_CACHE = [
   './',
@@ -14,13 +14,7 @@ self.addEventListener('install', (event) => {
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll([
-        '/', // o '/index.html' si usas rutas relativas
-        '/index.html',
-        '/main.js',
-        '/style.css',
-        '/icon.png', // lo que sea que uses
-      ]);
+      return cache.addAll(FILES_TO_CACHE);
     })
   );
 });
