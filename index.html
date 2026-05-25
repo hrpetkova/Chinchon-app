@@ -29,6 +29,7 @@
     --glass-border: rgba(255, 255, 255, 0.1);
     --card-inner: rgba(255, 255, 255, 0.03);
     --input-bg: rgba(255, 255, 255, 0.05);
+    background: var(--bg-gradient);
   }
 
   * {
@@ -40,9 +41,9 @@
     margin: 0;
     padding: 1rem;
     min-height: 100vh;
-    background: var(--bg-gradient);
+    background: url('fondo.png') center / cover no-repeat fixed;
     color: var(--text-color);
-    transition: background 0.4s ease, color 0.3s ease;
+    transition: color 0.3s ease;
   }
 
   .container {
@@ -274,6 +275,32 @@
   #toggle-theme:hover {
     transform: scale(1.15) translateY(-2px);
     box-shadow: 0 6px 18px rgba(0, 194, 203, 0.35);
+  }
+
+  /* Toast de actualización */
+  .toast-update {
+    position: fixed;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: linear-gradient(135deg, #00c2cb, #667eea);
+    color: #ffffff;
+    padding: 0.7rem 1.4rem;
+    border-radius: 50px;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 20px rgba(0, 194, 203, 0.45);
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .toast-update.toast-show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 </style>
 
@@ -576,13 +603,18 @@
       });
     
       // 3. Reenganches
-      players.forEach((player) => {
-        if (player.score > 100) {
+      // Snapshot tomado ANTES de modificar nada: evita que el reenganche de un jugador
+      // afecte al cálculo del siguiente cuando varios superan 100 en la misma ronda.
+      const snapshot = players.map(p => ({ score: p.score, eliminated: !!p.eliminated }));
+
+      players.forEach((player, idx) => {
+        if (snapshot[idx].score > 100) {
           if (player.livesUsed < 2) {
-            const puntuacionesValidas = players
-              .filter(p => p !== player && !p.eliminated)
-              .map(p => p.score <= 100 ? p.score : 100);
-    
+            // Solo son referencia válida los que NO pasaron de 100 esta ronda
+            const puntuacionesValidas = snapshot
+              .filter((s, i) => i !== idx && !s.eliminated && s.score <= 100)
+              .map(s => s.score);
+
             const maxPuntos = puntuacionesValidas.length > 0 ? Math.max(...puntuacionesValidas) : 100;
             alert(`${player.name} se reengancha con ${maxPuntos} puntos (vida ${player.livesUsed + 1}/2).`);
             player.score = maxPuntos;
@@ -624,11 +656,33 @@
       themeBtn.textContent = isDark ? "☀️ Tema Claro" : "🌙 Tema Oscuro";
     });
 
-    // Registrar Service Worker
+    // Registrar Service Worker y detectar actualizaciones
     if ('serviceWorker' in navigator) {
+      // Guardamos si ya había un SW activo antes de registrar (= hay versión previa instalada)
+      const hadController = !!navigator.serviceWorker.controller;
+
       navigator.serviceWorker.register('./service-worker.js')
         .then(reg => console.log('[SW] Registrado:', reg.scope))
         .catch(err => console.error('[SW] Error al registrar:', err));
+
+      // controllerchange se dispara cuando el nuevo SW toma el control
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (hadController) {
+          showToast('✨ ¡App actualizada a la última versión!');
+        }
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.createElement('div');
+      toast.className = 'toast-update';
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.classList.add('toast-show'), 50);
+      setTimeout(() => {
+        toast.classList.remove('toast-show');
+        setTimeout(() => toast.remove(), 400);
+      }, 4000);
     }
 
   </script>
